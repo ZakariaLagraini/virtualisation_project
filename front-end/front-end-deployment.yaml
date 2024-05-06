@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-end
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+      containers:
+      - name: front-end
+        image: front-end:v1
+        ports:
+        - containerPort: 443  # Change the container port to 443 for HTTPS
+        volumeMounts:
+        - name: tls-certs
+          mountPath: /etc/tls  # Mount path for TLS certificate
+      volumes:
+      - name: tls-certs
+        secret:
+          secretName: tls-certificate  # Name of the Kubernetes Secret containing your TLS certificate
